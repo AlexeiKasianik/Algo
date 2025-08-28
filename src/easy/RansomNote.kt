@@ -4,6 +4,8 @@ class RansomNote {
 
     // https://leetcode.com/problems/ransom-note/
     // https://leetcode.com/explore/learn/card/the-leetcode-beginners-guide/692/challenge-problems/4427/
+
+    // решение пройдёт простую проверку Но при сабмите задачи свалится.
     fun canConstruct(ransomNote: String, magazine: String): Boolean {
         if (magazine.length < ransomNote.length) return false
         var magazineBuffer = magazine
@@ -16,6 +18,38 @@ class RansomNote {
                     break@inner
                 } else return false
             }
+        }
+        return true
+    }
+
+    // это уже пройдёт
+    fun canConstructSlow(ransomNote: String, magazine: String): Boolean {
+        if (magazine.length < ransomNote.length) return false
+        var magazineBuffer = magazine
+
+        for (i in 0 until ransomNote.length) {
+            val need = ransomNote[i]
+            var found = false
+
+            for (j in 0 until magazineBuffer.length) {
+                if (need == magazineBuffer[j]) {
+                    magazineBuffer = magazineBuffer.removeRange(j, j + 1)
+                    found = true
+                    break
+                }
+            }
+            if (!found) return false
+        }
+        return true
+    }
+
+    fun canConstructSlow2(ransomNote: String, magazine: String): Boolean {
+        if (magazine.length < ransomNote.length) return false
+        var buf = magazine
+        for (c in ransomNote) {
+            val idx = buf.indexOf(c)
+            if (idx == -1) return false
+            buf = buf.removeRange(idx, idx + 1)
         }
         return true
     }
@@ -53,7 +87,7 @@ class RansomNote {
             if (currentCount == 0) {
                 return false
             }
-            magazineLetters.put(r, currentCount)
+            magazineLetters.put(r, currentCount - 1)
         }
 
         return true
